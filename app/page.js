@@ -8,16 +8,30 @@ export default function Home() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // バックエンドAPIにテキストを送信
-        const response = await fetch("/api/parse-text", {
+    
+        // 解析APIにテキストを送信
+        const parseResponse = await fetch("/api/parse-text", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ text: inputText }),
         });
-
-        const data = await response.json();
-        setResponseData(data);
+    
+        const eventData = await parseResponse.json();
+        setResponseData(eventData);
+    
+        // 解析したデータをGoogleカレンダーに送信
+        const calendarResponse = await fetch("/api/add-event", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(eventData),
+        });
+    
+        const calendarData = await calendarResponse.json();
+        if (calendarData.success) {
+            alert(`Googleカレンダーに予定を追加しました！\n${calendarData.eventUrl}`);
+        } else {
+            alert("カレンダー登録に失敗しました");
+        }
     };
 
     return (
