@@ -21,7 +21,7 @@ const oneHourAfter = (dateStr) => {
 };
 
 export async function POST(req) {
-    const { eventName, lendDate, returnDate, location, model, number, surname, arrivalFlight, departureFlight, options, requiresTel } = await req.json();
+    const { eventName, lendDate, returnDate, location, model, number, surname, arrivalFlight, departureFlight, options, requiresTel, directVisit } = await req.json();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     if (departureFlight) {
