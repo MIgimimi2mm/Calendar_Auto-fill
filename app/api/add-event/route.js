@@ -21,7 +21,8 @@ const oneHourAfter = (dateStr) => {
 };
 
 export async function POST(req) {
-    const { eventName, lendDate, returnDate, location, model, number, surname, arrivalFlight, options, requiresTel, directVisit } = await req.json();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { eventName, lendDate, returnDate, location, model, number, surname, arrivalFlight, departureFlight, options, requiresTel } = await req.json();
 
     if (!eventName || !lendDate || !returnDate || !location || !model || !number || !surname) {
         return new Response(JSON.stringify({ error: "イベント情報が不足しています" }), { status: 400 });
