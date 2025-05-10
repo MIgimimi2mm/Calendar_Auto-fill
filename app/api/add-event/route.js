@@ -20,9 +20,9 @@ oauth2Client.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN })
 
 const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 
-// 1時間後の日時を生成する関数
-const oneHourAfter = (dateStr) => {
-    return dayjs(dateStr).add(1, 'hour').format();
+// 1時間前の日時を生成する関数
+const oneHourBefore = (dateStr) => {
+    return dayjs(dateStr).subtract(8, 'hour').format();
 };
 
 export async function POST(req) {
@@ -111,7 +111,7 @@ export async function POST(req) {
         const lendEvent = {
             summary: lendSummary,
             start: { dateTime: lendDate, timeZone: "Asia/Tokyo" },
-            end: { dateTime: oneHourAfter(lendDate), timeZone: "Asia/Tokyo" },
+            end: { dateTime: oneHourBefore(lendDate), timeZone: "Asia/Tokyo" },
             description: lendDescription,
             colorId: "0", 
         };
@@ -125,7 +125,7 @@ export async function POST(req) {
         const returnEvent = {
             summary: returnSummary,
             start: { dateTime: returnDate, timeZone: "Asia/Tokyo" },
-            end: { dateTime: oneHourAfter(returnDate), timeZone: "Asia/Tokyo" },
+            end: { dateTime: oneHourBefore(returnDate), timeZone: "Asia/Tokyo" },
             description: lendDescription,
             colorId: colorId,
         };
