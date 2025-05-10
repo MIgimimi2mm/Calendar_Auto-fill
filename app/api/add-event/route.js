@@ -22,10 +22,7 @@ const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 
 // 1時間後の日時を生成する関数
 const oneHourAfter = (dateStr) => {
-    return dayjs(dateStr)
-        .tz("Asia/Tokyo")       // タイムゾーンを日本時間に設定
-        .add(1, "hour")         // 1時間後に設定
-        .toISOString();         // ISO形式で返す
+    return dayjs(dateStr).add(1, 'hour').format();
 };
 
 export async function POST(req) {
