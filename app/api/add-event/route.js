@@ -1,4 +1,11 @@
 import { google } from "googleapis";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 
 // 環境変数からカレンダーIDを取得
 const ITAMI_CALENDAR_ID = process.env.GOOGLE_CALENDAR_ITAMI;
@@ -15,9 +22,10 @@ const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 
 // 1時間後の日時を生成する関数
 const oneHourAfter = (dateStr) => {
-    const date = new Date(dateStr);
-    date.setHours(date.getHours() + 1);
-    return date.toISOString();
+    return dayjs(dateStr)
+        .tz("Asia/Tokyo")       // タイムゾーンを日本時間に設定
+        .add(1, "hour")         // 1時間後に設定
+        .toISOString();         // ISO形式で返す
 };
 
 export async function POST(req) {
