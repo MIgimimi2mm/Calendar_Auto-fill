@@ -126,7 +126,7 @@ export async function POST(req) {
             summary: returnSummary,
             start: { dateTime: returnDate, timeZone: "Asia/Tokyo" },
             end: { dateTime: oneHourBefore(returnDate), timeZone: "Asia/Tokyo" },
-            description: lendDescription,
+            // description: lendDescription,
             colorId: colorId,
         };
 
