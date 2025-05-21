@@ -29,6 +29,8 @@ export async function POST(req) {
         const flightMatch = text.match(/［搭乗便］\s*([A-Z]+\d+)?\s*([A-Z]+\d+)?/);
         const requiresTel = /［搭乗便］\s*要/.test(text);
         const directVisit = /［搭乗便］\s*直接/.test(text);
+        const isRepeater = /【一般】.*?リピーター/.test(text);
+
 
 
 
@@ -64,7 +66,8 @@ export async function POST(req) {
             });
         }
 
-        return { eventName, lendDate, returnDate, location, model, number, surname, arrivalFlight, departureFlight, options, requiresTel, directVisit };
+        return { eventName, lendDate, returnDate, location, model, number, surname, arrivalFlight, departureFlight, options, requiresTel, directVisit, isRepeater
+        };
     };
 
     const eventData = extractData(text);

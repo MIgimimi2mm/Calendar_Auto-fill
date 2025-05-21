@@ -22,11 +22,13 @@ const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 
 // 1時間前の日時を生成する関数
 const oneHourBefore = (dateStr) => {
-    return dayjs(dateStr).subtract(8, 'hour').format();
+
+    return dayjs(dateStr).add(1, 'hour').format();
+    // return dayjs(dateStr).subtract(8, 'hour').format();
 };
 
 export async function POST(req) {
-    const { eventName, lendDate, returnDate, location, model, number, surname, arrivalFlight, departureFlight, options, requiresTel, directVisit } = await req.json();
+    const { eventName, lendDate, returnDate, location, model, number, surname, arrivalFlight, departureFlight, options, requiresTel, directVisit, isRepeater} = await req.json();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     if (departureFlight) {
@@ -91,10 +93,17 @@ export async function POST(req) {
         }
     }
 
+    // ★ リピーターの場合、タイトルに追加
+    let repeater = "";
+    if(isRepeater){
+        repeater += " ★リピーター様";
+    }
+
+
 
     // ★ イベント名を加工
-    const lendSummary = `${emojiPrefix}【貸出】${shortLocation}${model}(${number})${surname}様`;
-    const returnSummary = `${emojiPrefix}【返却】${shortLocation}${model}(${number})${surname}様`;
+    const lendSummary = `${emojiPrefix}【貸出】${shortLocation}${model}(${number})${surname}様${repeater}`;
+    const returnSummary = `${emojiPrefix}【返却】${shortLocation}${model}(${number})${surname}様${repeater}`;
 
     // ★ description を組み立てる
     let optionsText = "";
@@ -102,8 +111,16 @@ export async function POST(req) {
         const optionLines = Object.entries(options).map(([key, val]) => `${key} × ${val}`);
         optionsText = "\n" + optionLines.join("\n");
     }
-    let lendDescription = directVisit ? "直接来店" : `✈ ${arrivalFlight || "?"}`;
-    if (optionsText) lendDescription += optionsText;
+    let lendDescription = "";
+
+    if (directVisit) {
+        lendDescription = "直接来店";
+    } else if (arrivalFlight) {
+        lendDescription = `✈ ${arrivalFlight}`;
+    } else {
+        lendDescription = "搭乗便確認（来店方法確認）";
+    }
+
 
 
     try {
