@@ -23,8 +23,8 @@ const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 // 1時間前の日時を生成する関数
 const oneHourBefore = (dateStr) => {
 
-    return dayjs(dateStr).add(1, 'hour').format();
-    // return dayjs(dateStr).subtract(8, 'hour').format();
+    // return dayjs(dateStr).add(1, 'hour').format();
+    return dayjs(dateStr).subtract(8, 'hour').format();
 };
 
 export async function POST(req) {
@@ -120,6 +120,9 @@ export async function POST(req) {
     } else {
         lendDescription = "搭乗便確認（来店方法確認）";
     }
+
+    if (optionsText) lendDescription += optionsText;
+
 
 
 
